@@ -1,0 +1,144 @@
+#define IDOK        1
+#define IDCANCEL    2
+#define WS_TABSTOP  0x00010000
+#define WS_GROUP    0x00020000
+#define WS_BORDER   0x00800000
+#define WS_VSCROLL  0x00200000
+#define LBS_NOTIFY  0x0001
+#define ES_NUMBER   0x2000
+#define CBS_DROPDOWNLIST 0x0003
+#define RT_MANIFEST 24
+
+#include "resource.h"
+
+2 RT_MANIFEST "src\\RegexViewer.manifest"
+
+// ─── toolbar button ───────────────────────────────────────────────────────────
+
+IDB_TB_LENS      BITMAP "src\\tb_lens.bmp"
+IDI_TB_LENS      ICON   "src\\tb_lens.ico"
+IDI_TB_LENS_DARK ICON   "src\\tb_lens_dark.ico"
+
+// ─── version info (Notepad++ plugin list / update checks) ────────────────────
+
+1 VERSIONINFO
+FILEVERSION     REGEXVIEWER_VERSION_COMMA
+PRODUCTVERSION  REGEXVIEWER_VERSION_COMMA
+FILEFLAGSMASK   0x3fL
+FILEFLAGS       0x0L
+FILEOS          0x40004L
+FILETYPE        0x2L
+FILESUBTYPE     0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName",      "Datamodder"
+            VALUE "FileDescription",  "Datamodder Regex Viewer for Notepad++"
+            VALUE "FileVersion",      REGEXVIEWER_VERSION
+            VALUE "InternalName",     "RegexViewer"
+            VALUE "LegalCopyright",   "Copyright (c) 2026 Datamodder"
+            VALUE "OriginalFilename", "RegexViewer.dll"
+            VALUE "ProductName",      "Datamodder Regex Viewer"
+            VALUE "ProductVersion",   REGEXVIEWER_VERSION
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+// ─── main settings dialog ─────────────────────────────────────────────────────
+
+IDD_SETTINGS DIALOG 0, 0, 420, 305
+STYLE 0x80C80040
+CAPTION "Datamodder Regex Viewer - Settings"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LISTBOX IDC_NAV, 7, 7, 80, 265, LBS_NOTIFY | WS_VSCROLL | WS_BORDER | WS_TABSTOP
+    DEFPUSHBUTTON "Save",   IDOK,      303, 281, 50, 14
+    PUSHBUTTON    "Cancel", IDCANCEL,  360, 281, 50, 14
+END
+
+// ─── tab: Matching ────────────────────────────────────────────────────────────
+
+IDD_TAB_MATCHING DIALOG 0, 0, 322, 230
+STYLE 0x44000040
+FONT 8, "MS Shell Dlg"
+BEGIN
+    GROUPBOX        "Match like", -1, 5, 5, 308, 92
+    AUTORADIOBUTTON "Notepad++  (what Find/Replace will do with the regex)", IDC_LIKE_NPP, 13, 19, 290, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "The source language  (detected from what you paste)",  IDC_LIKE_SOURCE, 13, 34, 290, 10
+    AUTORADIOBUTTON "Always this flavour:",                                 IDC_LIKE_FIXED, 13, 49, 100, 10
+    COMBOBOX        IDC_FIXED_FLAVOR,                                       120, 47, 120, 120, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Example: in Python without re.MULTILINE, ^ matches only at the start of the file; in Notepad++ it matches at every line.",
+                    -1, 13, 66, 290, 25
+
+    GROUPBOX "Limits", -1, 5, 102, 308, 50
+    LTEXT    "Stop a run after (seconds):", -1,                         13, 116, 200, 10
+    EDITTEXT IDC_BUDGET,                                               250, 114,  50, 12, WS_BORDER | WS_TABSTOP | ES_NUMBER
+    LTEXT    "Large file: show the visible part first above (MB):", -1, 13, 133, 230, 10
+    EDITTEXT IDC_LARGE_MB,                                             250, 131,  50, 12, WS_BORDER | WS_TABSTOP | ES_NUMBER
+END
+
+// ─── tab: Highlighting ────────────────────────────────────────────────────────
+
+IDD_TAB_HIGHLIGHT DIALOG 0, 0, 322, 100
+STYLE 0x44000040
+FONT 8, "MS Shell Dlg"
+BEGIN
+    GROUPBOX     "Highlighting", -1, 5, 5, 308, 30
+    AUTOCHECKBOX "Draw a box around each whole match  (groups are always coloured)", IDC_MATCH_BOX, 13, 18, 290, 10, WS_GROUP | WS_TABSTOP
+    GROUPBOX     "Match list", -1, 5, 40, 308, 30
+    LTEXT        "Max. matches in the list:", -1,     13, 53, 200, 10
+    EDITTEXT     IDC_MAX_LIST,                       250, 51,  50, 12, WS_BORDER | WS_TABSTOP | ES_NUMBER
+END
+
+// ─── tab: Behavior & Profiles ─────────────────────────────────────────────────
+
+IDD_TAB_BEHAVIOR DIALOG 0, 0, 322, 262
+STYLE 0x44000040
+FONT 8, "MS Shell Dlg"
+BEGIN
+    GROUPBOX     "Behavior", -1, 5, 5, 308, 30
+    AUTOCHECKBOX "Run again when the document changes", IDC_RERUN_ON_EDIT, 13, 18, 290, 10, WS_GROUP | WS_TABSTOP
+
+    GROUPBOX "Saved profiles", -1, 5, 40, 308, 155
+    LISTBOX IDC_PROFILE_LIST,                    13,  53, 195, 135, LBS_NOTIFY | WS_VSCROLL | WS_BORDER | WS_TABSTOP
+    PUSHBUTTON "Load",   IDC_PROFILE_LOAD,       213, 53,  92, 14
+    PUSHBUTTON "Delete", IDC_PROFILE_DELETE,     213, 71,  92, 14
+
+    GROUPBOX "Save current settings as profile", -1, 5, 198, 308, 35
+    LTEXT    "Name:", -1,                         13, 213,  30, 10
+    EDITTEXT IDC_PROFILE_NAME,                    45, 212, 160, 12, WS_BORDER | WS_TABSTOP
+    PUSHBUTTON "Save", IDC_PROFILE_SAVE,         210, 210,  95, 14
+
+    PUSHBUTTON "Export to JSON...",   IDC_PROFILE_EXPORT,   5, 240, 148, 14
+    PUSHBUTTON "Import from JSON...", IDC_PROFILE_IMPORT, 158, 240, 148, 14
+END
+
+// ─── docked panel (controls are created in code) ─────────────────────────────
+
+IDD_PANEL DIALOG 0, 0, 400, 160
+STYLE 0x80C80040
+EXSTYLE 0x00000080
+CAPTION "Regex Viewer"
+FONT 8, "MS Shell Dlg"
+BEGIN
+END
+
+// ─── about dialog ─────────────────────────────────────────────────────────────
+
+IDD_ABOUT DIALOG 0, 0, 300, 264
+STYLE 0x80C80040
+CAPTION "About Datamodder Regex Viewer"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT "", IDC_ABOUT_VERSION, 10, 8, 280, 10
+    LTEXT "", IDC_ABOUT_BODY, 10, 22, 280, 175
+    CONTROL "<a href=""https://datamodder.com/utils/regex-viewer"">https://datamodder.com/utils/regex-viewer</a>", IDC_ABOUT_LINK_WEBSITE, "SysLink", WS_TABSTOP, 10, 200, 280, 12
+    CONTROL "<a href=""https://github.com/dm-utils/regexviewer"">https://github.com/dm-utils/regexviewer</a>", IDC_ABOUT_LINK, "SysLink", WS_TABSTOP, 10, 214, 280, 12
+    DEFPUSHBUTTON "OK", IDOK, 243, 244, 47, 14
+END

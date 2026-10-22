@@ -1,0 +1,18 @@
+Here's a regex that matches the date and the log level at the start of each line:
+
+```python
+import re
+
+pattern = re.compile(r"^(?P<date>\d{4}-\d{2}-\d{2})\s+(?P<level>ERROR|WARN)\b", re.MULTILINE)
+
+for m in pattern.finditer(log_text):
+    print(m.group("date"), m.group("level"))
+```
+
+If you also want to mask the dates, use `re.sub`:
+
+```python
+masked = re.sub(r"\d{4}-\d{2}-\d{2}", "<date>", log_text, flags=re.I)
+cleaned = re.sub("(\\w+)@(\\w+)\\.com", r"\2 at \1", text)
+df["zip"] = df["address"].str.extract(r"(\d{4}\s?[A-Z]{2})", expand=False)
+```

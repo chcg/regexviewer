@@ -1,0 +1,7 @@
+candidates: 2
+[1] inline code
+    flavor:  Notepad++ (not recognised)
+    pattern: ^\d{4}-\d{2}-\d{2}$
+[2] inline code
+    flavor:  Notepad++ (not recognised)
+    pattern: \b\w+@\w+\.\w+\b

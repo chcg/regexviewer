@@ -1,0 +1,114 @@
+@case python regex, matched like Notepad++ (^ per line)
+@source python
+@flavor npp
+@pattern ^(?P<date>\d{4}-\d{2}-\d{2})\s+(?P<level>ERROR|WARN)\b
+@text
+2026-10-21 ERROR disk full
+2026-10-21 INFO all good
+2026-10-22 WARN slow response
+@end
+
+@case same regex, matched like Python (no MULTILINE: ^ only at the start)
+@source python
+@flavor python
+@pattern ^(?P<date>\d{4}-\d{2}-\d{2})\s+(?P<level>ERROR|WARN)\b
+@text
+2026-10-21 ERROR disk full
+2026-10-21 INFO all good
+2026-10-22 WARN slow response
+@end
+
+@case Python replacement with \g<name>
+@source python
+@flavor npp
+@pattern (?P<user>\w+)@(?P<host>[\w.]+)
+@replace \g<host>: \g<user> (\1)
+@text
+mail jan@example.com or piet@test.nl
+@end
+
+@case JavaScript replacement with $<name> and $&
+@source javascript
+@flavor javascript
+@pattern (?<n>\d+)px
+@replace [$&] $<n>em
+@text
+width: 12px; height: 3px
+@end
+
+@case RE2 rejects lookahead
+@source re2
+@flavor re2
+@pattern \w+(?=@)
+@text
+user@example
+@end
+
+@case POSIX ERE takes the longest alternative
+@source ere
+@flavor ere
+@pattern a|ab|abc
+@text
+abc
+@end
+
+@case same alternation in Notepad++ takes the first
+@flavor npp
+@pattern a|ab|abc
+@text
+abc
+@end
+
+@case sed BRE groups and backreference
+@source bre
+@flavor bre
+@pattern \(foo\)bar
+@replace \1baz
+@text
+foobar foobaz
+@end
+
+@case Unicode word characters
+@flavor npp
+@pattern \w+
+@text
+café naïve Zoë
+@end
+
+@case Java \p{Lu} approximated
+@source java
+@flavor java
+@pattern \p{Lu}\p{Ll}+
+@text
+Hello world Ådne
+@end
+
+@case dot and the s flag
+@flavor npp
+@flags s
+@pattern <b>.+?</b>
+@text
+<b>one
+two</b>
+@end
+
+@case empty matches
+@flavor npp
+@pattern x*
+@text
+axxb
+@end
+
+@case catastrophic backtracking stops
+@flavor npp
+@pattern (a+)+$
+@text
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab
+@end
+
+@case compile error
+@flavor npp
+@pattern (abc
+@text
+abc
+@end

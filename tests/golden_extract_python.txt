@@ -1,0 +1,17 @@
+candidates: 4
+[1] Python · raw string · flags: m
+    flavor:  Python
+    pattern: ^(?P<date>\d{4}-\d{2}-\d{2})\s+(?P<level>ERROR|WARN)\b
+    flags:   m
+[2] Python · raw string · flags: i · with replacement
+    flavor:  Python
+    pattern: \d{4}-\d{2}-\d{2}
+    flags:   i
+    replace: <date>  ->  <date>
+[3] Python · string · with replacement
+    flavor:  Python
+    pattern: (\w+)@(\w+)\.com
+    replace: \2 at \1  ->  ${2} at ${1}
+[4] Python (pandas) · raw string
+    flavor:  Python
+    pattern: (\d{4}\s?[A-Z]{2})

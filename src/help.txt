@@ -1,0 +1,117 @@
+Datamodder Regex Viewer - Help
+==============================
+
+Paste a regex the way you got it - from ChatGPT, Claude, Stack Overflow or
+your own code - and see what it does in the document you have open.
+
+
+QUICK START
+-----------
+1. Open the file you want to search (a log, an export, code ...).
+2. Click the magnifier button in the toolbar, or Plugins -> Datamodder Regex
+   Viewer -> Show Regex Viewer. A panel opens at the bottom.
+3. Paste into the box at the top. Anything goes:
+     - a bare pattern:           ^\d{4}-\d{2}-\d{2}
+     - a line of code:           re.compile(r"(?P<date>\d{4}-\d{2})", re.M)
+     - a whole AI answer with ```code blocks``` and text around them
+4. Every match lights up in the document, each group in its own colour. The
+   explanation (left) says what each part of the regex does; the list (right)
+   shows every match and its groups. Double-click a row to jump to it.
+
+Shortcuts from the menu: "Paste regex from clipboard" fills the box straight
+from the clipboard; "Explain selection as regex" takes the regex (or line of
+code) you selected in a file.
+
+
+WHAT CAN BE PASTED
+------------------
+Regex Viewer finds the regex, its flags and any replacement in:
+  Python      re.compile / search / match / findall / sub ..., pandas .str.*
+              raw strings r"...", normal strings, flags re.I re.M re.S re.X
+  JavaScript  /.../gimsu literals, new RegExp("...", "g"), .replace(/re/, "$1")
+  C#          new Regex(@"..."), Regex.Match/Replace(...), RegexOptions.*
+  Java/Kotlin Pattern.compile("..."), .replaceAll(...), Regex("""...""")
+  PHP         preg_match('/.../i', ...), preg_replace(...)
+  Go / Rust   regexp.MustCompile(`...`), Regex::new(r"...")
+  PowerShell  -match / -replace / -split, [regex]::Match(...)
+  Shell       grep -E/-P, sed 's/.../.../g', rg, perl -pe 's/.../.../'
+  Markdown    ```code blocks``` and `inline code`
+If a paste holds more than one regex, pick one in the list on the right of
+the "Found" line.
+
+Watch out for string escaping: in a JavaScript string "\d" is just "d". Regex
+Viewer shows what the language really gets, and warns about it.
+
+
+MATCH LIKE NOTEPAD++, LIKE THE SOURCE, OR A FIXED FLAVOUR
+---------------------------------------------------------
+The same regex can behave differently in the language it was written for and
+in Notepad++. The biggest case: in Python without re.MULTILINE, ^ matches only
+at the very start of the text; in Notepad++ Find it matches at the start of
+EVERY line. On a log file that can be 1 match against 500.
+
+  Match like Notepad++ (default)   What Find/Replace will do with the regex.
+                                    A warning tells you when the source
+                                    language would behave differently.
+  Match like the source            The language detected from the paste,
+                                    with its flags.
+  Match like <flavour>             Always that flavour.
+
+Flavours: Notepad++, Python, JavaScript, .NET, Java, PCRE (PHP, grep -P),
+POSIX ERE and BRE (grep, sed, awk), RE2 (Go, Rust, Google Sheets, BigQuery).
+
+Choose in the dropdown at the bottom of the panel (for this session) or in
+Settings -> Matching (the default).
+
+How exact is this? Every flavour runs on the same engine as Notepad++
+(Boost.Regex) with that flavour's settings: anchors, dot, case, POSIX
+"longest match" and the syntax differences. For everyday regexes that gives
+the same matches as the real language. For the rare construct that can't be
+reproduced, the panel shows a warning instead of differing silently. RE2
+refuses lookahead, lookbehind and backreferences, so Regex Viewer then shows
+nothing - just like Go would.
+
+
+THE HIGHLIGHTS ARE EXACT, THE EXPLANATION IS A READING AID
+-----------------------------------------------------------
+The highlights in your document come from the regex engine itself. The
+explanation is written by Regex Viewer; for unusual constructs it may say
+"not explained". When in doubt, trust the highlights.
+
+
+REPLACE AND REPLACE ALL
+-----------------------
+A replacement in the paste (re.sub, .replace, s/.../.../) fills the "Replace
+with" box; you can also type one. It is converted to Notepad++ syntax ($1,
+$+{name}), shown next to the box, and the list gets a Result column.
+  Replace       replaces the selected match and selects the next one (the
+                first click selects the next match, like Notepad++)
+  Replace all   replaces every match as ONE undo step (Ctrl+Z undoes all);
+                above 1,000 matches it asks first.
+
+"Copy for Notepad++ Find" copies the converted regex for the Find dialog.
+
+
+SCOPE, FLAGS, LARGE FILES
+-------------------------
+Scope: the whole document, or only the selection.
+Flags i m s x (ignore case, multiline, dot matches newline, extended) start
+as found in the paste; tick or untick them to try.
+Above 5 MB (Settings) the visible part is shown first; the full count follows
+a moment later ("counting ..."). A regex that takes too long (catastrophic
+backtracking) is stopped after 2 seconds (Settings) with the line where it
+happened.
+
+
+SPLIT VIEW
+----------
+Regex Viewer doesn't work while Notepad++ shows two views side by side. The
+panel then shows a red bar; click "Close second view" (or move the tabs back
+yourself) and it continues.
+
+
+ENCODING
+--------
+Matching is done in Unicode (UTF-8 documents directly; ANSI documents are
+converted), so \w and [[:alpha:]] include letters like e-acute. Bytes that are
+not valid UTF-8 are skipped.

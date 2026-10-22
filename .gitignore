@@ -1,0 +1,6 @@
+build/
+vendor/
+tests/actual_*.txt
+release_staging/
+RegexViewer.zip
+DESIGN.md

@@ -1,0 +1,57 @@
+=== python regex, matched like Notepad++ (^ per line)  (Notepad++)
+    anchors differ from the source
+    matches: 2
+    [2026-10-21 ERROR] g1=[2026-10-21] g2=[ERROR]
+    [2026-10-22 WARN] g1=[2026-10-22] g2=[WARN]
+    ! (?P<name>…) is Python syntax. Notepad++ needs (?<name>…); the converted form is used and copied.
+=== same regex, matched like Python (no MULTILINE: ^ only at the start)  (Python)
+    matches: 1
+    [2026-10-21 ERROR] g1=[2026-10-21] g2=[ERROR]
+=== Python replacement with \g<name>  (Notepad++)
+    matches: 2
+    [jan@example.com] g1=[jan] g2=[example.com]  ->  [example.com: jan (jan)]
+    [piet@test.nl] g1=[piet] g2=[test.nl]  ->  [test.nl: piet (piet)]
+    npp replacement: $+{host}: $+{user} (${1})
+    ! (?P<name>…) is Python syntax. Notepad++ needs (?<name>…); the converted form is used and copied.
+=== JavaScript replacement with $<name> and $&  (JavaScript)
+    matches: 2
+    [12px] g1=[12]  ->  [[12px] 12em]
+    [3px] g1=[3]  ->  [[3px] 3em]
+    npp replacement: [$&] $+{n}em
+    ! In JavaScript (without the u flag) \d, \w and \b only cover ASCII; here they also match other scripts, such as Arabic digits.
+=== RE2 rejects lookahead  (RE2)
+    rejected: RE2 (Go, Rust, Google Sheets, BigQuery) would reject this regex: it doesn't support lookahead. Nothing is highlighted, because that is what those tools would do.
+=== POSIX ERE takes the longest alternative  (POSIX ERE)
+    matches: 1
+    [abc]
+=== same alternation in Notepad++ takes the first  (Notepad++)
+    matches: 1
+    [a]
+=== sed BRE groups and backreference  (POSIX BRE)
+    matches: 1
+    [foobar] g1=[foo]  ->  [foobaz]
+    npp replacement: ${1}baz
+=== Unicode word characters  (Notepad++)
+    matches: 3
+    [café]
+    [naïve]
+    [Zoë]
+=== Java \p{Lu} approximated  (Java)
+    matches: 2
+    [Hello]
+    [Ådne]
+    ! \p{…} Unicode properties are matched with the closest POSIX class ([[:upper:]] for \p{Lu} and so on); the result can differ slightly for rare characters.
+=== dot and the s flag  (Notepad++)
+    matches: 1
+    [<b>one\ntwo</b>]
+=== empty matches  (Notepad++)
+    matches: 5
+    []
+    [xx]
+    []
+    []
+    []
+=== catastrophic backtracking stops  (Notepad++)
+    matches: 0  (too slow)
+=== compile error  (Notepad++)
+    compile error: Unmatched marking parenthesis ( or \(.

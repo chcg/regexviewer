@@ -1,0 +1,59 @@
+JavaScript:
+
+```js
+const email = /^[\w.+-]+@[\w-]+\.[a-z]{2,}$/i;
+const out = text.replace(/(\d+)-(\d+)/g, "$2-$1");
+const re = new RegExp("\d+\.\d+", "g");   // oops: single backslashes
+if (/^https?:\/\//.test(url)) { }
+```
+
+C#:
+
+```csharp
+var rx = new Regex(@"(?<user>[^@\s]+)@(?<host>\S+)", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+string fixedText = Regex.Replace(input, @"\s{2,}", " ");
+```
+
+Java and Kotlin:
+
+```java
+Pattern p = Pattern.compile("^\\d{3}-\\d{4}$", Pattern.MULTILINE);
+String s = line.replaceAll("\\s+", "_");
+```
+
+```kotlin
+val r = Regex("""\b[A-Z]{3}\b""", RegexOption.IGNORE_CASE)
+val isZip = "\\d{4}[A-Z]{2}".toRegex()
+```
+
+PHP, Go and Rust:
+
+```php
+if (preg_match('/^(\d+)\s+items?$/i', $line, $m)) { }
+$clean = preg_replace('#/+#', '/', $path);
+```
+
+```go
+var re = regexp.MustCompile(`(?i)^(\w+)=(.*)$`)
+```
+
+```rust
+let re = Regex::new(r"(?x) ^ (\d{4}) - (\d{2}) $").unwrap();
+```
+
+Shell:
+
+```bash
+grep -Ei 'error|fatal' app.log | sed -E 's/^([0-9-]+) .*/\1/'
+sed 's/\(foo\)bar/\1baz/g' file.txt
+rg '\bTODO\(\w+\)' src/
+perl -pe 's/(\w+)\s+\1/$1/g' notes.txt
+```
+
+PowerShell:
+
+```powershell
+if ($line -match '^\s*#') { }
+$x = $text -creplace '(\d+)px', '$1em'
+[regex]::Matches($text, '\b\w{5}\b')
+```

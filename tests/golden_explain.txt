@@ -1,0 +1,82 @@
+=== ^(?<date>\d{4}-\d{2}-\d{2})\s+(?<level>ERROR|WARN)\b
+    ^                             start of a line
+    (?<date>                      group 1 "date":   [g1]
+      \d{4}                       exactly 4 digits
+      -                           a "-"
+      \d{2}                       exactly 2 digits
+      -                           a "-"
+      \d{2}                       exactly 2 digits
+    \s+                           one or more whitespace characters
+    (?<level>                     group 2 "level":   [g2]
+      ERROR|WARN                  one of these alternatives:
+        ERROR                     the text "ERROR"
+        WARN                      the text "WARN"
+    \b                            a word boundary (between a word character and something else)
+=== [A-Z][a-z]*(?=\.)
+    [A-Z]                         one character from: A–Z
+    [a-z]*                        zero or more characters from: a–z
+    (?=                           followed by (checked, not part of the match):
+      \.                          a "."
+=== .*?
+    .*?                           zero or more characters (anything except line breaks) (as few as possible)
+=== \b(\w+)\s+\1\b
+    \b                            a word boundary (between a word character and something else)
+    (                             group 1:   [g1]
+      \w+                         one or more word characters (letters, digits or _)
+    \s+                           one or more whitespace characters
+    \1                            the same text that group 1 matched
+    \b                            a word boundary (between a word character and something else)
+=== https?://[^\s/$.?#].[^\s]*
+    http                          the text "http"
+    s?                            optionally a "s"
+    ://                           the text "://"
+    [^\s/$.?#]                    one character that is not: whitespace characters, "/", "$", ".", "?", "#"
+    .                             any character except a line break
+    [^\s]*                        zero or more characters that are not: whitespace characters
+=== (?i)colou?r
+    (?i)                          from here on: ignore case
+    colo                          the text "colo"
+    u?                            optionally a "u"
+    r                             a "r"
+=== <p>.+?</p>
+    <p>                           the text "<p>"
+    .+?                           one or more characters of any kind (as few as possible)
+    </p>                          the text "</p>"
+=== ^\s*$
+    ^                             start of a line
+    \s*                           zero or more whitespace characters
+    $                             end of a line
+=== (?:\+31|0)6[-\s]?\d{8}
+    (?:                           a group (not captured):
+      \+31|0                      one of these alternatives:
+        \+31                      the text "+31"
+        0                         a "0"
+    6                             a "6"
+    [-\s]?                        optionally one character from: "-", whitespace characters
+    \d{8}                         exactly 8 digits
+=== \p{Lu}\p{Ll}+
+    engine error at 6: Escape sequence was neither a valid property nor a valid character class name.
+=== (?<!\$)\b\d+(?:[.,]\d{2})?\b
+    (?<!                          not preceded by:
+      \$                          a "$"
+    \b                            a word boundary (between a word character and something else)
+    \d+                           one or more digits
+    (?:                           a group (not captured) (optional):
+      [.,]                        one character from: ".", ","
+      \d{2}                       exactly 2 digits
+    \b                            a word boundary (between a word character and something else)
+=== a{2,}b{,3}c{1,5}+
+    a{2,}                         2 or more "a" characters
+    b{,3}                         between 0 and 3 "b" characters
+    c{1,5}+                       between 1 and 5 "c" characters (as many as possible, never giving any back)
+=== [^"\\]*(?:\\.[^"\\]*)*
+    [^"\\]*                       zero or more characters that are not: '"', "\"
+    (?:                           a group (not captured), repeated zero or more times:
+      \\                          a "\"
+      .                           any character except a line break
+      [^"\\]*                     zero or more characters that are not: '"', "\"
+=== (?|a(b)|c(d))
+    (?|a(b)|c(d))                 (not explained: (?|a(b)|c(d)))
+    ! Some parts are marked "not explained". The highlights are still exact: they come from the regex engine.
+=== \d{4} # year
+    \d{4}                         exactly 4 digits

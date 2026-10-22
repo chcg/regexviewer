@@ -1,0 +1,10 @@
+codepage 65001: 28 bytes -> 23 units (invalid UTF-8 seen)
+  round trip ok
+  unit 0 -> byte 0
+  unit 5 -> byte 6
+  unit 23 -> byte 28
+codepage 1252: 28 bytes -> 28 units
+  round trip ok
+  unit 0 -> byte 0
+  unit 5 -> byte 5
+  unit 28 -> byte 28

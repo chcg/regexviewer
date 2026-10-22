@@ -1,0 +1,16 @@
+# flags|||pattern, or just a pattern
+^(?<date>\d{4}-\d{2}-\d{2})\s+(?<level>ERROR|WARN)\b
+[A-Z][a-z]*(?=\.)
+.*?
+\b(\w+)\s+\1\b
+https?://[^\s/$.?#].[^\s]*
+(?i)colou?r
+s|||<p>.+?</p>
+^\s*$
+(?:\+31|0)6[-\s]?\d{8}
+\p{Lu}\p{Ll}+
+(?<!\$)\b\d+(?:[.,]\d{2})?\b
+a{2,}b{,3}c{1,5}+
+[^"\\]*(?:\\.[^"\\]*)*
+(?|a(b)|c(d))
+x|||\d{4} # year

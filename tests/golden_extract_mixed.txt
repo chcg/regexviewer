@@ -1,0 +1,83 @@
+candidates: 22
+[1] JavaScript · /…/i literal · flags: i
+    flavor:  JavaScript
+    pattern: ^[\w.+-]+@[\w-]+\.[a-z]{2,}$
+    flags:   i
+[2] JavaScript · /…/g literal · with replacement
+    flavor:  JavaScript
+    pattern: (\d+)-(\d+)
+    replace: $2-$1  ->  ${2}-${1}
+[3] JavaScript · new RegExp (string)
+    flavor:  JavaScript
+    pattern: d+.d+
+    note:    In a JavaScript string \d, \. lose their backslash (\d becomes just "d"). The pattern shown is what JavaScript really gets; write \\d in the string, or use a /…/ literal.
+[4] JavaScript · /…/ literal
+    flavor:  JavaScript
+    pattern: ^https?://
+[5] C# · verbatim string · flags: i, m
+    flavor:  .NET
+    pattern: (?<user>[^@\s]+)@(?<host>\S+)
+    flags:   i, m
+[6] C# · verbatim string · with replacement
+    flavor:  .NET
+    pattern: \s{2,}
+    replace:    ->   
+[7] Java · string · flags: m
+    flavor:  Java
+    pattern: ^\d{3}-\d{4}$
+    flags:   m
+[8] Java · string · with replacement
+    flavor:  Java
+    pattern: \s+
+    replace: _  ->  _
+[9] Kotlin · raw string · flags: i
+    flavor:  Java
+    pattern: \b[A-Z]{3}\b
+    flags:   i
+[10] Kotlin · string
+    flavor:  Java
+    pattern: \d{4}[A-Z]{2}
+[11] PHP · preg_match · flags: i
+    flavor:  PCRE
+    pattern: ^(\d+)\s+items?$
+    flags:   i
+[12] PHP · preg_replace · with replacement
+    flavor:  PCRE
+    pattern: /+
+    replace: /  ->  /
+[13] Go · raw string
+    flavor:  RE2
+    pattern: (?i)^(\w+)=(.*)$
+[14] Rust · raw string
+    flavor:  RE2
+    pattern: (?x) ^ (\d{4}) - (\d{2}) $
+[15] grep · -E (POSIX ERE) · flags: i
+    flavor:  POSIX ERE
+    pattern: error|fatal
+    flags:   i
+[16] sed -E · POSIX ERE · with replacement
+    flavor:  POSIX ERE
+    pattern: ^([0-9-]+) .*
+    replace: \1  ->  ${1}
+[17] sed · POSIX BRE · with replacement
+    flavor:  POSIX BRE
+    pattern: \(foo\)bar
+    replace: \1baz  ->  ${1}baz
+[18] rg · Rust regex
+    flavor:  RE2
+    pattern: \bTODO\(\w+\)
+[19] perl · with replacement
+    flavor:  PCRE
+    pattern: (\w+)\s+\1
+    replace: $1  ->  ${1}
+[20] PowerShell · -match · flags: i
+    flavor:  .NET
+    pattern: ^\s*#
+    flags:   i
+[21] PowerShell · -replace · with replacement
+    flavor:  .NET
+    pattern: (\d+)px
+    replace: $1em  ->  ${1}em
+[22] PowerShell · string
+    flavor:  .NET
+    pattern: \b\w{5}\b
